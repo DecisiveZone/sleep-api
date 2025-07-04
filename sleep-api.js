@@ -15,13 +15,19 @@ const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
 // File logging utility
 const logToFile = (content) => {
-  const logPath = path.join(__dirname, "logs", "sleep.log");
+  const logsDir = path.join(__dirname, "logs");
+  const logPath = path.join(logsDir, "sleep.log");
   const timestamp = new Date().toLocaleString("en-GB", {
     timeZone: "Asia/Dubai",
     hour12: false,
   });
 
   const logMessage = `[${timestamp}] ${content}\n`;
+
+  // Create logs directory if it doesn't exist
+  if (!fs.existsSync(logsDir)) {
+    fs.mkdirSync(logsDir);
+  }
 
   fs.appendFile(logPath, logMessage, (err) => {
     if (err) console.error("❌ Error writing log:", err);
